@@ -9,7 +9,7 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'user'
-    UserID = Column(Integer, primary_key=True)
+    UserID = Column(Integer, relationship(Comment, Post), primary_key=True)
     Nick = Column(String(30), nullable=False, unique=True)
     Password = Column(String(20), nullable=False)
     Date = Column(Date, nullable=True)
@@ -25,7 +25,21 @@ class Comment(Base):
     __tablename__ = 'comment'
     CommentID = Column(Integer, primary_key=True)
     Comment_text = Column(String(250), nullable=False)
-    UserID = Column(Integer, ForeignKey(user.UserID))
+    UserID = Column(Integer, ForeignKey('user.UserID'))
+    PostID = Column(Integer, ForeignKey('post.PostID'))
+
+class Post(Base):
+    __tablename__ = 'post'
+    PostID = Column(Integer, relationship(Comment, Post), primary_key=True)
+    UserID = Column(Integer, ForeignKey('User.UserID'))
+
+class Media(Base):
+    __tablename__ = 'media'
+    MediaID = Column(Integer, primary_key=True)
+    Url = Column(String(250), nullable=False)
+    Type = Column(Integer, nullable=False)
+    Email = Column(String(50), nullable=False, unique=True)
+    PostID = Column(Integer, ForeignKey('post.PostID'))
 
 
 
