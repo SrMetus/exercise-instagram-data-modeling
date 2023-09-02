@@ -9,12 +9,14 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'user'
-    UserID = Column(Integer, relationship(Comment, Post), primary_key=True)
+    UserID = Column(Integer, primary_key=True)
     Nick = Column(String(30), nullable=False, unique=True)
     Password = Column(String(20), nullable=False)
     Date = Column(Date, nullable=True)
     email = Column(String(40), nullable=False, unique=True)
-    StatusID = Column(Integer, relationship(Status))
+    StatusID = relationship('Status')
+    commentid = relationship('Comment')
+    postid = relationship('Post')
 
 class Status(Base):
     __tablename__ = 'status'
@@ -30,8 +32,9 @@ class Comment(Base):
 
 class Post(Base):
     __tablename__ = 'post'
-    PostID = Column(Integer, relationship(Comment, Post), primary_key=True)
+    PostID = Column(Integer, primary_key=True)
     UserID = Column(Integer, ForeignKey('User.UserID'))
+    commentid = relationship('Comment')
 
 class Media(Base):
     __tablename__ = 'media'
